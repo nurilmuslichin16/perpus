@@ -121,7 +121,7 @@
          </tbody>
     </table>
     <div> <h3><a class="btn btn-success"  href="<?php echo base_url(); ?>admin/Report/pdf_kembali">Export PDF</a></h3> </div>
-    <div> <h3><a class="btn btn-warning"  href="<?php echo base_url(); ?>admin/Report/excel1">Export Excel</a></h3> </div>
+    <div> <h3><a class="btn btn-warning"  href="<?php echo base_url(); ?>admin/Report/excel_kembali">Export Excel</a></h3> </div>
   </div>
   <div class="box-footer">
     Menampilkan daftar buku

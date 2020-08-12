@@ -33,6 +33,19 @@ class Report_model extends CI_Model {
 		$data = $this->db->get();
 		return $data;
 	}
+
+	public function getDataKembali() {
+		$this->db->select('*');
+		$this->db->from('tb_detail_pinjam as dp');
+		$this->db->join('tb_pinjam as p', 'p.id_pinjam = dp.id_pinjam');
+		$this->db->join('tb_buku as b', 'b.id_buku = dp.id_buku');
+		$this->db->join('tb_anggota as a', 'a.id_anggota = p.id_anggota');
+		$this->db->join('tb_kembali as km', 'km.id_pinjam = p.id_pinjam');
+		$this->db->join('tb_kelas as k', 'k.id_kelas = a.id_kelas');
+		$this->db->join('tb_agama as ag', 'ag.id_agama = a.id_agama');
+		$data = $this->db->get();
+		return $data;
+	}
 	
 }
 

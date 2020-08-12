@@ -72,8 +72,7 @@ class Report extends CI_Controller {
         }
     }
 
-
-     public function Pdfkan()
+    public function Pdfkan()
     {
          $data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
         $cek = $this->session->userdata('logged_in');
@@ -96,7 +95,8 @@ class Report extends CI_Controller {
             header('location:'.base_url().'web/log');
         }
     }
-        public function pengembalian()
+    
+    public function pengembalian()
     {
         $data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
         $cek = $this->session->userdata('logged_in');
@@ -134,9 +134,7 @@ class Report extends CI_Controller {
         }
     }
 
-
-
-     public function pdf_kembali()
+    public function pdf_kembali()
     {
         $data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
         $cek = $this->session->userdata('logged_in');
@@ -313,6 +311,7 @@ class Report extends CI_Controller {
             redirect('Excel');
         }
     } 
+
     public function excel1(){
         $ambildata = $this->mread->export_kontak();
         $data_kelas = $this->Buku_model->getAllData("tb_kelas");
@@ -674,8 +673,8 @@ class Report extends CI_Controller {
           $excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data->judul);
           $excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data->no_buku);
           $excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data->id_pinjam);
-          $excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $data->tgl_pinjam);
-          $excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $data->tgl_kembali);
+          $excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, date_indo($data->tgl_pinjam));
+          $excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, date_indo($data->tgl_kembali));
           $excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data->total_buku);
           
           $excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
@@ -720,6 +719,8 @@ class Report extends CI_Controller {
     }
 
     public function excel_kembali() {
+        $this->load->model('Report_model');
+
         include APPPATH.'third_party/PHPExcel/PHPExcel.php';
 
         $excel = new PHPExcel();
@@ -785,53 +786,52 @@ class Report extends CI_Controller {
         $excel->getActiveSheet()->getStyle('J3')->applyFromArray($style_col);
         $excel->getActiveSheet()->getStyle('K3')->applyFromArray($style_col);
         
-        // $dokter = $this->m_datadokter->filter($jekel, $umur_awal, $umur_akhir, $spesialis, $poliklinik)->result();
-        // $no = 1;
-        // $numrow = 4;
-        // foreach($dokter as $data){
-        //   $excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-        //   $excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $data->nama_dokter);
-        //   $excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $data->jekel == 0 ? 'Laki-Laki' : 'Perempuan');
-        //   $excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $data->spesialis);
-        //   $excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data->nama_poli);
-        //   $excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data->alamat);
-        //   $excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data->hp);
-        //   $excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $data->email);
-        //   $excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $data->tempat_lahir .', '. date_indo($data->tanggal_lahir));
-        //   $excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data->lulusan);
-        //   $excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $data->tahun_lulus);
-        //   $excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, date_indo($data->sertifikasi_kompetensi_mulai));
-        //   $excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, date_indo($data->sertifikasi_kompetensi_berlaku));
+        $kembali = $this->Report_model->getDataKembali()->result();
+        $no = 1;
+        $numrow = 4;
+        foreach($kembali as $data){
+          $excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
+          $excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $data->id_anggota);
+          $excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $data->nama);
+          $excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $data->kelas);
+          $excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data->judul);
+          $excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data->no_buku);
+        //   $excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data->tgl_pinjam);
+          $excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, date_indo($data->tgl_pinjam));
+          $excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, date_indo($data->tgl_kembali));
+          $excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, date_indo($data->tgl_dikembalikan));
+          $excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data->terlambat);
+          $excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $data->denda);
           
-        //   $excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style_row);
-        //   $excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style_row);
+          $excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style_row);
           
-        //   $no++;
-        //   $numrow++;
-        // }
+          $no++;
+          $numrow++;
+        }
         
         $excel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-        $excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
-        $excel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
-        $excel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
-        $excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
-        $excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
-        $excel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-        $excel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
-        $excel->getActiveSheet()->getColumnDimension('I')->setWidth(30);
-        $excel->getActiveSheet()->getColumnDimension('J')->setWidth(30);
-        $excel->getActiveSheet()->getColumnDimension('K')->setWidth(30);
+        $excel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
+        $excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+        $excel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+        $excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+        $excel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+        $excel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+        $excel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+        $excel->getActiveSheet()->getColumnDimension('I')->setWidth(25);
+        $excel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+        $excel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
         
         $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
         
@@ -850,7 +850,7 @@ class Report extends CI_Controller {
 
     public function tes() {
         $this->load->model('Report_model');
-        $data = $this->Report_model->getDataStokBuku(11111, 1);
+        $data = $this->Report_model->getDataKembali()->result_array();
         echo json_encode($data);
     }
 }

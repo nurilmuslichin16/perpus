@@ -22,6 +22,17 @@ class Report_model extends CI_Model {
 		$data = $this->db->count_all_results('');
 		return $data;
 	}
+
+	public function getDataPinjam() {
+		$this->db->select('*');
+		$this->db->from('tb_pinjam as p');
+		$this->db->join('tb_anggota as a', 'a.id_anggota = p.id_anggota');
+		$this->db->join('tb_detail_pinjam as dp', 'dp.id_pinjam = p.id_pinjam');
+		$this->db->join('tb_buku as b', 'b.id_buku = dp.id_buku');
+		$this->db->where('p.status',0);
+		$data = $this->db->get();
+		return $data;
+	}
 	
 }
 

@@ -162,6 +162,7 @@ class Petugas extends MY_Controller {
 													'password'=>$pass,
 													'stts'=>$this->input->post('stts'));
 									$quer1=$this->Buku_model->insertData('tb_login',$data2);
+									$this->session->set_flashdata("message","Data Berhasil Disimpan!");
 									redirect("admin/petugas","refresh");
 								}
 								else
@@ -335,6 +336,7 @@ class Petugas extends MY_Controller {
 										'password'=>$pass,
 										'stts'=>$this->input->post('stts'));
 						$quer1=$this->Buku_model->updateData1('tb_login',$data2,'username',$id);
+						$this->session->set_flashdata("message","Data Berhasil Diubah!");
 						redirect("admin/Petugas","refresh");
 						}
 					}
@@ -354,12 +356,12 @@ class Petugas extends MY_Controller {
   			$query1 = $this->Buku_model->delete('tb_login','username',$id);					
 			if ($query)
 				{
-					$this->session->set_flashdata("message","berhasil");
+					$this->session->set_flashdata("message","Data Berhasil Dihapus!");
 					redirect("admin/Petugas","refresh");
 				}
 			else
 				{
-					$this->session->set_flashdata("message","gagal");
+					$this->session->set_flashdata("missing","Data Tidak Berhasil Dihapus!");
 					redirect("admin/Petugas","refresh");
 				}
  		}

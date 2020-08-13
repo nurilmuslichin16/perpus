@@ -65,6 +65,7 @@ class Denda extends MY_Controller {
 		                          'status' => $this->input->post('status'),
 		                        );
 					$query=$this->Buku_model->insertData('tb_denda',$data);
+					$this->session->set_flashdata("message","Data Berhasil Disimpan!");
 					redirect("admin/Denda/index","refresh");	
 				}
 		}
@@ -139,6 +140,7 @@ class Denda extends MY_Controller {
 		                          'status' => $this->input->post('status'),
 		                        );
 					$quer=$this->Buku_model->updateData1('tb_denda',$data,$field,$id);
+					$this->session->set_flashdata("message","Data Berhasil Diubah!");
 					redirect("admin/Denda","refresh");	
 				}
 		}
@@ -155,12 +157,12 @@ class Denda extends MY_Controller {
   			$query = $this->Buku_model->delete('tb_denda',$field,$id);					
 			if ($query)
 				{
-					$this->session->set_flashdata("message","berhasil");
+					$this->session->set_flashdata("message","Data Berhasil Dihapus!");
 					redirect("admin/Denda","refresh");
 				}
 			else
 				{
-					$this->session->set_flashdata("message","gagal");
+					$this->session->set_flashdata("missing","Data Tidak Berhasil Dihapus!");
 					redirect("admin/Denda","refresh");
 				}
  		}

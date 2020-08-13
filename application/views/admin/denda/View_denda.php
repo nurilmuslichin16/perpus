@@ -37,6 +37,21 @@
 
   </div><!-- /.box-header -->
    <div class="box-body">
+    
+<?php if($this->session->flashdata('message')) { ?>
+        <div class="alert alert-success alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-check"></i> Sukses!</h4>
+          <?= $this->session->flashdata('message'); ?>
+        </div>
+      <?php } else if($this->session->flashdata('missing')) { ?>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-check"></i> Gagal!</h4>
+          <?= $this->session->flashdata('missing'); ?>
+        </div>
+      <?php } ?>
+
    <div class="btn-group"><a href="<?php echo base_url(); ?>admin/Denda/create"  class="btn btn-success" role="button" data-toggle="tooltip" title="Tambah Denda"><i class="fa fa-plus"></i>  Tambah Denda</a></div>
    <div class="form-group"></div>
    <table id="example2" class="table table-striped table-bordered" cellspacing="0" width="100%">

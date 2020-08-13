@@ -282,6 +282,7 @@ class Petugas extends MY_Controller {
 													'password'=>$pass,
 													'stts'=>$this->input->post('stts'));
 						$quer1=$this->Buku_model->updateData1('tb_login',$data2,'username',$id);
+						$this->session->set_flashdata("message","Data Berhasil Diubah!");
 						redirect("admin/Petugas","refresh");
 					}	
 					else

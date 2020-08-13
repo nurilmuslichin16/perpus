@@ -70,6 +70,7 @@ class Mapel extends MY_Controller {
 		                          'mapel' => $this->input->post('mapel')
 		                        );
 					$quer=$this->Buku_model->insertData('tb_mapel',$data);
+					$this->session->set_flashdata("message","Data Berhasil Disimpan!");
 					redirect("admin/Mapel","refresh");	
 				}
 		}
@@ -145,6 +146,7 @@ class Mapel extends MY_Controller {
 		                          'mapel' => $this->input->post('mapel')
 		                        );
 					$quer=$this->Buku_model->updateData1('tb_mapel',$data,$field,$id);
+					$this->session->set_flashdata("message","Data Berhasil Diubah!");
 					redirect("admin/Mapel","refresh");	
 				}
 		}
@@ -161,12 +163,12 @@ class Mapel extends MY_Controller {
   			$query = $this->Buku_model->delete('tb_mapel',$field,$id);					
 			if ($query)
 				{
-					$this->session->set_flashdata("message","berhasil");
+					$this->session->set_flashdata("message","Data Berhasil Dihapus!");
 					redirect("admin/Mapel","refresh");
 				}
 			else
 				{
-					$this->session->set_flashdata("message","gagal");
+					$this->session->set_flashdata("missing","Data Tidak Berhasil Dihapus!");
 					redirect("admin/Mapel","refresh");
 				}
  		}

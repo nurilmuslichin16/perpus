@@ -19,6 +19,15 @@
              echo '</div>';
 
     }?>
+
+<?php if($this->session->flashdata('missing')) { ?>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-check"></i> Gagal!</h4>
+          <?= $this->session->flashdata('missing'); ?>
+        </div>
+      <?php } ?>
+
     <!--show error message here -->
     <div class="form-group"></div>
   <form class="form-horizontal" method="post"  action="<?php echo base_url(); ?>admin/Penerbit/create" role="form">

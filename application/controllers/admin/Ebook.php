@@ -53,6 +53,7 @@ class Ebook extends MY_Controller {
 			$hapus = array('id_ebook' => $id_ebook);
 			
 			$this->Buku_model->deleteData('tb_ebook',$hapus);
+			$this->session->set_flashdata("message","Data Berhasil Dihapus!");
 			header('location:'.base_url().'admin/Ebook/ebook');
 		}
 		else
@@ -121,6 +122,7 @@ class Ebook extends MY_Controller {
 					);
 
 				$this->Buku_model->insertData('tb_ebook',$data);
+				$this->session->set_flashdata("message","Data Berhasil Disimpan!");
 				redirect ('admin/Ebook/ebook');
 				
 			}
@@ -237,6 +239,7 @@ class Ebook extends MY_Controller {
 					);
 	
 					$this->Buku_model->updateData('tb_ebook',$data,$id_ebook,'id_ebook');
+					$this->session->set_flashdata("message","Data Berhasil Disimpan!");
 					redirect('admin/Ebook/ebook','refresh');
 				}
 

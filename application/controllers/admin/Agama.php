@@ -63,6 +63,7 @@ class Agama extends CI_Controller {
                     //$data['isi']=$this->Anggota_model->get_all();
                     //$data['js']=$this->load->view('admin/anggota/js');
                     $tmp['content']=$this->load->view('admin/agama/Create_agama',$data, TRUE);
+                    $this->session->set_flashdata("missing","Data Tidak Berhasil Disimpan!");
                     $this->load->view('admin/layout',$tmp);
                 }
                 else
@@ -71,6 +72,7 @@ class Agama extends CI_Controller {
                                   'agama' => $this->input->post('agama')
                                 );
                     $quer=$this->Buku_model->insertData('tb_agama',$data);
+                    $this->session->set_flashdata("message","Data Berhasil Disimpan!");
                     redirect("admin/Agama","refresh");   
                 }
         }
@@ -146,6 +148,7 @@ class Agama extends CI_Controller {
                                   'agama' => $this->input->post('agama')
                                 );
                     $quer=$this->Buku_model->updateData1('tb_agama',$data,$field,$id);
+                    $this->session->set_flashdata("message","Data Berhasil Diubah!");
                     redirect("admin/Agama","refresh");   
                 }
         }
@@ -162,12 +165,12 @@ class Agama extends CI_Controller {
             $query = $this->Buku_model->delete('tb_agama',$field,$id);                   
             if ($query)
                 {
-                    $this->session->set_flashdata("message","berhasil");
+                    $this->session->set_flashdata("message","Data Berhasil Dihapus!");
                     redirect("admin/Agama","refresh");
                 }
             else
                 {
-                    $this->session->set_flashdata("message","gagal");
+                    $this->session->set_flashdata("missing","Data Tidak Berhasil Dihapus!");
                     redirect("admin/Agama","refresh");
                 }
         }

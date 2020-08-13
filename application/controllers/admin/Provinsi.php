@@ -72,6 +72,7 @@ class Provinsi extends CI_Controller {
 		                          'kota' => $this->input->post('kota')
 		                        );
 					$quer=$this->Buku_model->insertData('tb_provinsi',$data);
+					$this->session->set_flashdata("message","Data Berhasil Disimpan!");
 					redirect("admin/Provinsi","refresh");	
 				}
 		}
@@ -150,6 +151,7 @@ class Provinsi extends CI_Controller {
 		                          'kota' => $this->input->post('kota')
 		                        );
 					$quer=$this->Buku_model->updateData1('tb_provinsi',$data,$field,$id);
+					$this->session->set_flashdata("message","Data Berhasil Diubah!");
 					redirect("admin/Provinsi","refresh");	
 				}
 		}
@@ -166,12 +168,12 @@ class Provinsi extends CI_Controller {
   			$query = $this->Buku_model->delete('tb_provinsi',$field,$id);					
 			if ($query)
 				{
-					$this->session->set_flashdata("message","berhasil");
+					$this->session->set_flashdata("message","Data Berhasil Dihapus!");
 					redirect("admin/Provinsi","refresh");
 				}
 			else
 				{
-					$this->session->set_flashdata("message","gagal");
+					$this->session->set_flashdata("missing","Data Tidak Berhasil Dihapus!");
 					redirect("admin/Provinsi","refresh");
 				}
  		}

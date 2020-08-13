@@ -71,6 +71,7 @@ class Kelas extends CI_Controller {
                                   'kelas' => $this->input->post('kelas')
                                 );
                     $quer=$this->Buku_model->insertData('tb_kelas',$data);
+                    $this->session->set_flashdata("message","Data Berhasil Disimpan!");
                     redirect("admin/Kelas","refresh");   
                 }
         }
@@ -146,6 +147,7 @@ class Kelas extends CI_Controller {
                                   'kelas' => $this->input->post('kelas')
                                 );
                     $quer=$this->Buku_model->updateData1('tb_kelas',$data,$field,$id);
+                    $this->session->set_flashdata("message","Data Berhasil Diubah!");
                     redirect("admin/Kelas","refresh");   
                 }
         }
@@ -162,12 +164,12 @@ class Kelas extends CI_Controller {
             $query = $this->Buku_model->delete('tb_kelas',$field,$id);                   
             if ($query)
                 {
-                    $this->session->set_flashdata("message","berhasil");
+                    $this->session->set_flashdata("message","Data Berhasil Dihapus!");
                     redirect("admin/Kelas","refresh");
                 }
             else
                 {
-                    $this->session->set_flashdata("message","gagal");
+                    $this->session->set_flashdata("missing","Data Tidak Berhasil Dihapus!");
                     redirect("admin/Kelas","refresh");
                 }
         }

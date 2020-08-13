@@ -150,9 +150,9 @@ class Buku extends MY_Controller {
 							$querybaru = $this->Buku_model->insertData('tb_buku',$data);
 							if ($querybaru) {
 								$this->session->set_flashdata("message","Data Berhasil Disimpan!");
-								redirect("admin/Buku","refresh");	
+								redirect("admin/Buku/buku","refresh");	
 							} else {
-								$this->session->set_flashdata("message","gagal!!!");
+								$this->session->set_flashdata("missing","Data Tidak Berhasil Disimpan");
 								redirect("admin/Buku/create","refresh");	
 							}
 							
@@ -296,10 +296,9 @@ class Buku extends MY_Controller {
 							'gambar' => $nama_gambar
 						);
 
-				$this->Buku_model->updateData('tb_buku',$data,$id_buku,'id_buku');
-				redirect('admin/Buku/Buku','refresh');
+				$this->Buku_model->updateData('tb_buku',$data,$id,'id_buku');
 				$this->session->set_flashdata("message","Data Berhasil Diubah!");
-					redirect("admin/Buku","refresh");	
+				redirect('admin/Buku/Buku','refresh');
 
 			}
 		
@@ -370,10 +369,11 @@ class Buku extends MY_Controller {
 						'stok' => $stok_sesudah,
 			);
 			$this->Buku_model->updateData('tb_buku',$data2,$id_buku,'id_buku');
+			$this->session->set_flashdata("message","Data Berhasil Dihapus!");
 			header('location:'.base_url().'admin/buku/detail_stok/?id_buku='.$id_buku.'');
 			}else{
 				//tampilkan error
-				 $this->session->set_flashdata("message","<div class='callout callout-info'>
+				 $this->session->set_flashdata("missing","<div class='callout callout-info'>
                 <h4>Info!</h4>
                 <p>Data stok buku tidak dapat dihapus karena status dipinjamkan</p>
                 </div>");
@@ -427,7 +427,7 @@ class Buku extends MY_Controller {
 					//validasi no awal tidak boleh lebih besar dari no akhir
 					if($no_awal>$no_akhir){
 						//tampilkan error
-						 $this->session->set_flashdata("message","<div class='callout callout-info'>
+						 $this->session->set_flashdata("missing","<div class='callout callout-info'>
 		                <h4>Info!</h4>
 		                <p>No awal tidak boleh lebih besar dari No akhir</p>
 		                </div>");
@@ -463,7 +463,7 @@ class Buku extends MY_Controller {
 							'stok' => $stok_sesudah,
 						);
 					$this->Buku_model->updateData('tb_buku',$data2,$id_buku,'id_buku');
-
+					$this->session->set_flashdata("message","Data Berhasil Disimpan!");
 					header('location:'.base_url().'admin/buku/detail_stok/?id_buku='.$id_buku.'');
 					}
 			
@@ -546,7 +546,8 @@ class Buku extends MY_Controller {
 							'status' => $this->input->post('status'),
 						);
 				
-					$this->Buku_model->updateData('tb_detail_buku',$data,$id_det_buku,'id_detail_buku');		
+					$this->Buku_model->updateData('tb_detail_buku',$data,$id_det_buku,'id_detail_buku');
+					$this->session->set_flashdata("message","Data Berhasil Diubah!");		
 					header('location:'.base_url().'admin/buku/detail_stok/?id_buku='.$id_buku.'');
 			
 			}

@@ -70,6 +70,7 @@ class Pengarang extends MY_Controller {
 		                          'nama_pengarang' => $this->input->post('nama_pengarang')
 		                        );
 					$quer=$this->Buku_model->insertData('tb_pengarang',$data);
+					$this->session->set_flashdata("message","Data Berhasil Disimpan!");
 					redirect("admin/Pengarang","refresh");	
 				}
 		}
@@ -145,6 +146,7 @@ class Pengarang extends MY_Controller {
 		                          'nama_pengarang' => $this->input->post('nama_pengarang')
 		                        );
 					$quer=$this->Buku_model->updateData1('tb_pengarang',$data,$field,$id);
+					$this->session->set_flashdata("message","Data Berhasil Diubah!");
 					redirect("admin/Pengarang","refresh");	
 				}
 		}
@@ -161,12 +163,12 @@ class Pengarang extends MY_Controller {
   			$query = $this->Buku_model->delete('tb_pengarang',$field,$id);					
 			if ($query)
 				{
-					$this->session->set_flashdata("message","berhasil");
+					$this->session->set_flashdata("message","Data Berhasil Dihapus!");
 					redirect("admin/Pengarang","refresh");
 				}
 			else
 				{
-					$this->session->set_flashdata("message","gagal");
+					$this->session->set_flashdata("missing","Data Tidak Berhasil Dihapus!");
 					redirect("admin/Pengarang","refresh");
 				}
  		}

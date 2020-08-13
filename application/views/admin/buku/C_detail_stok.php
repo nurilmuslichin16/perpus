@@ -19,7 +19,16 @@
              echo '</div>';
 
    	}?>
-      <?php echo $this->session->flashdata('message');?>
+    
+    <?php if($this->session->flashdata('missing')) { ?>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-check"></i> Gagal!</h4>
+          <?= $this->session->flashdata('missing'); ?>
+        </div>
+      <?php } ?>
+
+
     <div class="form-group"></div>
 	<form class="form-horizontal" method="post"  action="<?php echo base_url(); ?>admin/Buku/tambah_det_buku/?id_buku=<?php echo $id_buku;?>" role="form">
               <div class="box-body">

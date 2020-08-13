@@ -73,6 +73,7 @@ class Penerbit extends CI_Controller {
                                   'id_provinsi' => $this->input->post('provinsi')
                                 );
                     $quer=$this->Buku_model->insertData('tb_penerbit',$data);
+                    $this->session->set_flashdata("message","Data Berhasil Disimpan!");
                     redirect("admin/Penerbit","refresh");   
                 }
         }
@@ -152,6 +153,7 @@ class Penerbit extends CI_Controller {
                                   'id_provinsi' => $this->input->post('provinsi')
                                 );
                     $quer=$this->Buku_model->updateData1('tb_penerbit',$data,$field,$id);
+                    $this->session->set_flashdata("message","Data Berhasil Diubah!");
                     redirect("admin/Penerbit","refresh");   
                 }
         }
@@ -168,12 +170,12 @@ class Penerbit extends CI_Controller {
             $query = $this->Buku_model->delete('tb_penerbit',$field,$id);                   
             if ($query)
                 {
-                    $this->session->set_flashdata("message","berhasil");
+                    $this->session->set_flashdata("message","Data Berhasil Dihapus!");
                     redirect("admin/Penerbit","refresh");
                 }
             else
                 {
-                    $this->session->set_flashdata("message","gagal");
+                    $this->session->set_flashdata("missing","Data Tidak Berhasil Dihapus!");
                     redirect("admin/Penerbit","refresh");
                 }
         }

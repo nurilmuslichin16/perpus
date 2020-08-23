@@ -37,6 +37,15 @@
 
   </div><!-- /.box-header -->
    <div class="box-body">
+
+   <?php if($this->session->flashdata('missing')) { ?>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-times"></i> Gagal!</h4>
+          <?= $this->session->flashdata('missing'); ?>
+        </div>
+      <?php } ?>
+
    <div class="btn-group">
    <a href="<?php echo base_url(); ?>admin/Pinjam/createdet"  class="btn btn-success" role="button" data-toggle="tooltip" title="Tambah Data Detail Stok  Buku"><i class="fa fa-plus"></i>Tambah Detail Pinjam</a></div>
    <!--div class="btn-group">

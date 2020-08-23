@@ -190,47 +190,54 @@ class Pinjam extends MY_Controller
 	}
 	public function createdet()
 	{
-		$data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
-		$this->form_validation->set_rules('id_buku','ID Number','required');
-		//$this->form_validation->set_rules('no_buku','Book Number','required');
-		if ($this->form_validation->run()==false) {
-					$id_pinjam=$this->session->userdata('id_pinjam');
-
-					$data['title']='Input detail Peminjaman';
-					$data['pointer']="Pinjam";
-					$data['classicon']="fa fa-book";
-					$data['main_bread']="Daftar detail Peminjaman";
-					$data['sub_bread']="Input detail Peminjaman";
-					$data['desc']="form untuk melakukan peminjaman";
-
-					/*data yang ditampilkan*/
-					$data['data_buku'] = $this->Buku_model->getAllData("tb_buku");
-					$data['pinjam'] = $this->Buku_model->get_detail1("tb_pinjam","id_pinjam",$id_pinjam);
-					$data['data_anggota'] = $this->Buku_model->getAllData("tb_anggota");
-					$tmp['content']=$this->load->view('admin/pinjam/Create_detail_pinjam',$data, TRUE);
-					$this->load->view('admin/layout',$tmp);
-		}
-		else
-		{
-			$det= array('id_detail_pinjam' => '',
-						'id_pinjam'=> $this->session->userdata('id_pinjam'),
-						'id_buku'=> $this->input->post('id_buku'),
-						'flag'=> 2);
-			$insert=$this->Buku_model->insertData('tb_detail_pinjam',$det);
-			$this->db->where('flag',2);
-		    $d1=$this->db->get('tb_detail_pinjam')->result();
-		    foreach ($d1 as $key1 => $value1)
-		    {
-	        	$id_detail_pinjam=$value1->id_detail_pinjam;
-		    }
-		      $dataa1=array('id_detail_pinjam' => $id_detail_pinjam,
-		      				'id_buku' => $this->input->post('id_buku'));
-            		$this->session->set_userdata($dataa1);
-		            //update status jadi 0 lagi
-		            $this->db->set('flag',0);
-		            $this->db->where('id_detail_pinjam',$this->session->userdata('id_detail_pinjam'));
-		            $this->db->update('tb_detail_pinjam');
-		    redirect('admin/Pinjam/updatedetnobuku');
+		$this->db->where('id_pinjam',$this->session->userdata('id_pinjam'));
+		$jumlah_pinjam = $this->db->count_all_results('tb_detail_pinjam');
+		if($jumlah_pinjam >= 3) {
+			$this->session->set_flashdata("missing","Jumlah buku yang dipinjam sudah maksimal!");
+			redirect('admin/Pinjam/View_dt_pinjam/?id_pinjam='.$this->session->userdata('id_pinjam'));
+		} else {
+			$data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
+			$this->form_validation->set_rules('id_buku','ID Number','required');
+			//$this->form_validation->set_rules('no_buku','Book Number','required');
+			if ($this->form_validation->run()==false) {
+						$id_pinjam=$this->session->userdata('id_pinjam');
+	
+						$data['title']='Input detail Peminjaman';
+						$data['pointer']="Pinjam";
+						$data['classicon']="fa fa-book";
+						$data['main_bread']="Daftar detail Peminjaman";
+						$data['sub_bread']="Input detail Peminjaman";
+						$data['desc']="form untuk melakukan peminjaman";
+	
+						/*data yang ditampilkan*/
+						$data['data_buku'] = $this->Buku_model->getAllData("tb_buku");
+						$data['pinjam'] = $this->Buku_model->get_detail1("tb_pinjam","id_pinjam",$id_pinjam);
+						$data['data_anggota'] = $this->Buku_model->getAllData("tb_anggota");
+						$tmp['content']=$this->load->view('admin/pinjam/Create_detail_pinjam',$data, TRUE);
+						$this->load->view('admin/layout',$tmp);
+			}
+			else
+			{
+				$det= array('id_detail_pinjam' => '',
+							'id_pinjam'=> $this->session->userdata('id_pinjam'),
+							'id_buku'=> $this->input->post('id_buku'),
+							'flag'=> 2);
+				$insert=$this->Buku_model->insertData('tb_detail_pinjam',$det);
+				$this->db->where('flag',2);
+				$d1=$this->db->get('tb_detail_pinjam')->result();
+				foreach ($d1 as $key1 => $value1)
+				{
+					$id_detail_pinjam=$value1->id_detail_pinjam;
+				}
+					$dataa1=array('id_detail_pinjam' => $id_detail_pinjam,
+									'id_buku' => $this->input->post('id_buku'));
+						$this->session->set_userdata($dataa1);
+						//update status jadi 0 lagi
+						$this->db->set('flag',0);
+						$this->db->where('id_detail_pinjam',$this->session->userdata('id_detail_pinjam'));
+						$this->db->update('tb_detail_pinjam');
+				redirect('admin/Pinjam/updatedetnobuku');
+			}
 		}
 	}
 	public function updatedetnobuku()

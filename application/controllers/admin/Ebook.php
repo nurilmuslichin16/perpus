@@ -107,7 +107,9 @@ class Ebook extends MY_Controller {
 					if ($this->upload->do_upload('file')) {
 						$nama_file = $this->upload->data('file_name');
 					} else {
-						echo $this->upload->display_errors();
+						// echo $this->upload->display_errors();
+						$this->session->set_flashdata("missing","File yang diupload harus PDF!");
+						redirect ('admin/Ebook/tambah_ebook');
 					}
 				} else {
 					$nama_file = '';
@@ -217,7 +219,9 @@ class Ebook extends MY_Controller {
 					if ($this->upload->do_upload('file')) {
 						$nama_file = $this->upload->data('file_name');
 					} else {
-						echo $this->upload->display_errors();
+						// echo $this->upload->display_errors();
+						$this->session->set_flashdata("missing","File yang diupload harus PDF!");
+						redirect ('admin/Ebook/edit_ebook/?id_ebook='.$this->input->post('id_ebook'));
 					}
 
 					$data= array (

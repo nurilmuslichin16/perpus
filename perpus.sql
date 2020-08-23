@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2020 at 10:13 AM
+-- Generation Time: Aug 23, 2020 at 03:13 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.2.31
 
@@ -92,7 +92,7 @@ INSERT INTO `tb_anggota` (`id_anggota`, `nama`, `id_kelas`, `id_agama`, `jenis_k
 --
 
 CREATE TABLE `tb_buku` (
-  `id_buku` char(15) NOT NULL,
+  `id_buku` int(11) NOT NULL,
   `ISBN` varchar(20) NOT NULL,
   `judul` varchar(100) NOT NULL,
   `id_kategori` int(3) NOT NULL,
@@ -110,11 +110,11 @@ CREATE TABLE `tb_buku` (
 --
 
 INSERT INTO `tb_buku` (`id_buku`, `ISBN`, `judul`, `id_kategori`, `id_penerbit`, `id_pengarang`, `no_rak`, `thn_terbit`, `stok`, `ket`, `gambar`) VALUES
-('11111', '9-786-020-606-071', 'Si Boneka Hidup Beraksi', 14, 5, 1, 12, 2018, 4, '', '200812054535.jpg'),
-('22222', '9786020623399', 'Komet Minor', 14, 5, 2, 12, 2019, 10, '+ 376 hlm - ilus. - 20 / 13,5 cm', '200810085943.jpg'),
-('33333', '978-623-206-431-7', 'Pesantren Itu Keren', 4, 6, 4, 2, 2020, 9, '+ 32 hlm - ilus. - 25 / 14 cm', ''),
-('44444', '978-979-518-315-2', 'Psikologi Kerja', 15, 7, 5, 13, 2014, 7, '128 Hlm, 14 x 21 cm', ''),
-('8888888888', '77777777', 'test', 6, 5, 2, 13, 2006, 32, '', '');
+(11111, '9-786-020-606-071', 'Si Boneka Hidup Beraksi', 14, 5, 1, 12, 2018, 4, '', '200812054535.jpg'),
+(22222, '9786020623399', 'Komet Minor', 14, 5, 2, 12, 2019, 10, '+ 376 hlm - ilus. - 20 / 13,5 cm', '200810085943.jpg'),
+(33333, '978-623-206-431-7', 'Pesantren Itu Keren', 4, 6, 4, 2, 2020, 9, '+ 32 hlm - ilus. - 25 / 14 cm', ''),
+(44444, '978-979-518-315-2', 'Psikologi Kerja', 15, 7, 5, 13, 2014, 7, '128 Hlm, 14 x 21 cm', ''),
+(2147483647, '77777777', 'test', 6, 5, 2, 13, 2006, 32, '', '');
 
 -- --------------------------------------------------------
 
@@ -145,7 +145,7 @@ INSERT INTO `tb_denda` (`id_denda`, `denda`, `status`) VALUES
 
 CREATE TABLE `tb_detail_buku` (
   `id_detail_buku` int(11) NOT NULL,
-  `id_buku` char(15) NOT NULL,
+  `id_buku` int(11) NOT NULL,
   `no_buku` int(4) NOT NULL,
   `status` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -155,29 +155,29 @@ CREATE TABLE `tb_detail_buku` (
 --
 
 INSERT INTO `tb_detail_buku` (`id_detail_buku`, `id_buku`, `no_buku`, `status`) VALUES
-(1, '11111', 1, '1'),
-(2, '11111', 2, '0'),
-(3, '11111', 3, '1'),
-(9, '22222', 1, '1'),
-(10, '22222', 2, '1'),
-(11, '22222', 3, '0'),
-(12, '22222', 4, '1'),
-(13, '22222', 5, '1'),
-(14, '22222', 6, '1'),
-(15, '22222', 7, '1'),
-(16, '22222', 8, '1'),
-(17, '33333', 1, '1'),
-(18, '33333', 2, '0'),
-(19, '33333', 3, '1'),
-(20, '33333', 4, '1'),
-(21, '33333', 5, '1'),
-(22, '33333', 6, '1'),
-(23, '44444', 1, '1'),
-(24, '44444', 2, '1'),
-(25, '44444', 3, '1'),
-(26, '44444', 4, '1'),
-(27, '8888888888', 1, '1'),
-(28, '8888888888', 2, '0');
+(1, 11111, 1, '1'),
+(2, 11111, 2, '0'),
+(3, 11111, 3, '1'),
+(9, 22222, 1, '1'),
+(10, 22222, 2, '1'),
+(11, 22222, 3, '0'),
+(12, 22222, 4, '1'),
+(13, 22222, 5, '1'),
+(14, 22222, 6, '1'),
+(15, 22222, 7, '1'),
+(16, 22222, 8, '1'),
+(17, 33333, 1, '1'),
+(18, 33333, 2, '0'),
+(19, 33333, 3, '1'),
+(20, 33333, 4, '1'),
+(21, 33333, 5, '1'),
+(22, 33333, 6, '1'),
+(23, 44444, 1, '1'),
+(24, 44444, 2, '1'),
+(25, 44444, 3, '1'),
+(26, 44444, 4, '1'),
+(27, 2147483647, 1, '1'),
+(28, 2147483647, 2, '0');
 
 -- --------------------------------------------------------
 
@@ -188,7 +188,7 @@ INSERT INTO `tb_detail_buku` (`id_detail_buku`, `id_buku`, `no_buku`, `status`) 
 CREATE TABLE `tb_detail_pinjam` (
   `id_detail_pinjam` int(11) NOT NULL,
   `id_pinjam` int(11) NOT NULL,
-  `id_buku` char(15) NOT NULL,
+  `id_buku` int(11) NOT NULL,
   `no_buku` int(4) NOT NULL,
   `flag` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -198,8 +198,8 @@ CREATE TABLE `tb_detail_pinjam` (
 --
 
 INSERT INTO `tb_detail_pinjam` (`id_detail_pinjam`, `id_pinjam`, `id_buku`, `no_buku`, `flag`) VALUES
-(2, 2, '22222', 1, 1),
-(3, 3, '22222', 3, 0);
+(2, 2, 22222, 1, 1),
+(3, 3, 22222, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -222,7 +222,7 @@ CREATE TABLE `tb_ebook` (
 INSERT INTO `tb_ebook` (`id_ebook`, `nama_ebook`, `id_kelas`, `id_mapel`, `file`) VALUES
 (1, 'Soal dan Pembahasan Fisika', 4, 1, ''),
 (2, 'Pantun', 6, 2, ''),
-(6, 'Sistem Reproduksi MAnusia', 29, 10, '6.pdf'),
+(6, 'Sistem Reproduksi Manusia', 29, 10, '6.pdf'),
 (7, 'Biologi Kelas XI', 29, 10, '200811031450.pdf'),
 (8, 'Pendidikan Kewarganegaraan Kelas 12', 60, 17, '200811032120.pdf'),
 (10, 'Sejarah Kelas 12', 55, 14, 'Sejarah_Kelas_122.pdf'),

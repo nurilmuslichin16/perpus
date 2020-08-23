@@ -85,7 +85,9 @@ class Anggota extends MY_Controller {
 							if ($this->upload->do_upload('foto')) {
 								$nama_foto = $this->upload->data('file_name');
 							} else {
-								echo $this->upload->display_errors();
+								// echo $this->upload->display_errors();
+								$this->session->set_flashdata("message","File yang diupload harus GIF|JPEG|JPG|PNG!");
+								redirect("petugas/Anggota/create");	
 							}
 						} else {
 							$nama_foto = '';
@@ -214,7 +216,9 @@ class Anggota extends MY_Controller {
 						if ($this->upload->do_upload('foto')) {
 							$nama_foto = $this->upload->data('file_name');
 						} else {
-							echo $this->upload->display_errors();
+							// echo $this->upload->display_errors();
+							$this->session->set_flashdata("message","File yang diupload harus GIF|JPEG|JPG|PNG!");
+							redirect("petugas/Anggota/edit/?id_anggota=".$this->input->post('id_anggota_lama'));	
 						}
 					} else {
 						$nama_foto = '';

@@ -136,6 +136,7 @@ class Petugas extends MY_Controller {
 							$data['data_petugas'] = $this->Buku_model->getAllData("tb_petugas");
 							//$data['pesan'] = "Id anggota telah ada silahkan ganti";
 							$data['data_agama'] = $this->Buku_model->getAllData("tb_agama");
+							$this->session->set_flashdata("missing","File yang diupload harus GIF|JPEG|JPG|PNG!");
 							$tmp['content']=$this->load->view('admin/petugas/Create_petugas',$data,true);
 							$this->load->view('admin/layout',$tmp);
 							
@@ -311,6 +312,7 @@ class Petugas extends MY_Controller {
 							$data['petugas'] = $this->Buku_model->get_detail1('tb_petugas','id_petugas',$id);
 							$data['login'] = $this->Buku_model->get_detail1("tb_login","username",$id);
 							$data['data_agama'] = $this->Buku_model->getAllData("tb_agama");
+							$this->session->set_flashdata("missing","File yang diupload harus GIF|JPEG|JPG|PNG!");
 							$tmp['content']=$this->load->view('admin/Petugas/Edit_petugas',$data,true);
 							$this->load->view('admin/layout',$tmp);
 						}

@@ -20,6 +20,15 @@
 
    	}?>
     <!--show error message here -->
+
+    <!-- untuk menampilkan alert -->
+    <?php if($this->session->flashdata('message')) { ?>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-times"></i> Peringatan!</h4>
+          <?= $this->session->flashdata('message'); ?>
+        </div>
+      <?php } ?>
     <div class="form-group"></div>
 	<form class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>admin/Anggota/update" role="form">
               <div class="box-body">

@@ -20,6 +20,15 @@
 
    	}?>
     <!--show error message here -->
+
+    <!-- untuk menampilkan alert -->
+    <?php if($this->session->flashdata('missing')) { ?>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-times"></i> Gagal!</h4>
+          <?= $this->session->flashdata('missing'); ?>
+        </div>
+      <?php } ?>
     <div class="form-group"></div>
 	    <form class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>petugas/Ebook/tambah_ebook" role="form">
         <div class="box-body">

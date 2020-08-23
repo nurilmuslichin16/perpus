@@ -43,7 +43,7 @@
               <div class="form-group">
                   <label class="col-sm-2 control-label">Tanggal Pinjam</label>
                   <div class="col-sm-4">
-                    <input type="date" value="<?php echo $data_pinjam['tgl_pinjam'];?>" disabled="disabled" required="required" class="form-control">
+                    <input type="date" value="<?php echo $data_pinjam['tgl_pinjam'];?>" name="tgl_pinjam" readonly required="required" class="form-control">
                   </div>
                 </div>
                  <div class="form-group">

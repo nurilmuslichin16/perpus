@@ -7,11 +7,20 @@ class Kembali extends CI_Controller {
             parent::__construct();
             //$this->Security_model->login_check();
         }
+
+    public function test($id_pinjam) {
+        $this->load->model('Kembali_Model');
+        $data = $this->Kembali_Model->getBukuPinjam($id_pinjam)->result_array();
+        echo json_encode($data);
+    }
+
     public function index()
     {
         $data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
         $cek = $this->session->userdata('logged_in');
         $stts = $this->session->userdata('stts');
+
+        $this->load->model('Kembali_Model');
         /*jika status login Yes dan status admin tampilkan*/
         if(!empty($cek) && $stts=='admin')
         {
@@ -28,6 +37,7 @@ class Kembali extends CI_Controller {
            $id_pinjam=$this->input->get('id_pinjam');
            $data['data_anggota'] = $this->Buku_model->getAllData("tb_anggota");
            $data['data_pinjam'] = $this->Buku_model->get_detail1("tb_pinjam","id_pinjam",$id_pinjam);
+           $data['data_buku'] = $this->Kembali_Model->getBukuPinjam($id_pinjam)->result_array();
             $tmp['content']=$this->load->view('admin/kembali/Form_kembali',$data, TRUE);
             //$tmp['content']=$this->load->view('admin/kembali/View_kembali',$data, TRUE);
             $this->load->view('admin/layout',$tmp);
@@ -145,6 +155,10 @@ class Kembali extends CI_Controller {
     }
      public function kembalikan($id=0)
     {
+        // $ambil = $this->input->post('buku');
+        // print_r($ambil);
+        // die();
+        
         $data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
         $cek = $this->session->userdata('logged_in');
         $stts = $this->session->userdata('stts');

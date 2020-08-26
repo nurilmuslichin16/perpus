@@ -68,6 +68,33 @@
                     <input data-provide="datepicker" class="bootstrap-datepicker" name="tgl_kembali">
                   </div>
                 </div>
+                <?php foreach($data_buku as $key => $buku) :?>
+                <?php if($key == 0) { ?>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Buku Yang Dipinjam</label>
+                  <div class="col-sm-4">
+                    <div class="form-check">
+                      <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="<?= $buku['id_buku']; ?>" name="buku[]" aria-label="...">&nbsp;
+                      <label class="form-check-label" for="gridCheck">
+                        <?= $buku['judul']; ?>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <?php } else { ?>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"></label>
+                  <div class="col-sm-4">
+                    <div class="form-check">
+                      <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="<?= $buku['id_buku']; ?>" name="buku[]" aria-label="...">&nbsp;
+                      <label class="form-check-label" for="gridCheck">
+                      <?= $buku['judul']; ?>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <?php } ?>
+                <?php endforeach; ?>
               </div>
               <div class="col-sm-4">
               </div>

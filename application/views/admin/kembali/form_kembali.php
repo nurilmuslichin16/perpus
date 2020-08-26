@@ -65,7 +65,7 @@
                   <label class="col-sm-2 control-label">Tanggal di Kembalikan</label>
                   <div class="col-sm-4">
                     <!--input type="date" required="required" class="form-control" name="tgl_kembali"-->
-                    <input data-provide="datepicker" class="bootstrap-datepicker" name="tgl_kembali">
+                    <input data-provide="datepicker" class="bootstrap-datepicker" name="tgl_kembali" required>
                   </div>
                 </div>
                 <?php foreach($data_buku as $key => $buku) :?>
@@ -74,7 +74,7 @@
                   <label class="col-sm-2 control-label">Buku Yang Dipinjam</label>
                   <div class="col-sm-4">
                     <div class="form-check">
-                      <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="<?= $buku['id_buku']; ?>" name="buku[]" aria-label="...">&nbsp;
+                      <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="<?= $buku['id_buku']; ?>" name="buku[]" checked>&nbsp;
                       <label class="form-check-label" for="gridCheck">
                         <?= $buku['judul']; ?>
                       </label>
@@ -86,7 +86,7 @@
                   <label class="col-sm-2 control-label"></label>
                   <div class="col-sm-4">
                     <div class="form-check">
-                      <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="<?= $buku['id_buku']; ?>" name="buku[]" aria-label="...">&nbsp;
+                      <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="<?= $buku['id_buku']; ?>" name="buku[]" >&nbsp;
                       <label class="form-check-label" for="gridCheck">
                       <?= $buku['judul']; ?>
                       </label>

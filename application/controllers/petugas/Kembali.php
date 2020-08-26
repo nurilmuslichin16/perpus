@@ -12,6 +12,8 @@ class Kembali extends CI_Controller {
         $data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
         $cek = $this->session->userdata('logged_in');
         $stts = $this->session->userdata('stts');
+
+        $this->load->model('Kembali_Model');
         /*jika status login Yes dan status admin tampilkan*/
         if(!empty($cek) && $stts=='petugas')
         {
@@ -28,6 +30,7 @@ class Kembali extends CI_Controller {
            $id_pinjam=$this->input->get('id_pinjam');
            $data['data_anggota'] = $this->Buku_model->getAllData("tb_anggota");
             $data['data_pinjam'] = $this->Buku_model->get_detail1("tb_pinjam","id_pinjam",$id_pinjam);
+            $data['data_buku'] = $this->Kembali_Model->getBukuPinjam($id_pinjam)->result_array();
             //$data['isi']=$this->Anggota_model->get_all();
             //$data['js']=$this->load->view('admin/anggota/js');
             $tmp['content']=$this->load->view('petugas/kembali/Form_kembali',$data, TRUE);
@@ -109,7 +112,7 @@ class Kembali extends CI_Controller {
             header('location:'.base_url().'web/log');
         }
     }
-     public function kembalikan($id=0)
+    public function kembalikan($id=0)
     {
         $data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
         $cek = $this->session->userdata('logged_in');
@@ -121,6 +124,9 @@ class Kembali extends CI_Controller {
             $tgl_kembali = strtotime($this->input->post('tgl_kembali'));
             if($tgl_kembali <= $tgl_pinjam) {
                 $this->session->set_flashdata("missing","Tanggal pengembalian buku harus melebihi tanggal pinjam!");
+			    redirect('petugas/Kembali/?id_pinjam='.$id);
+            } else if(empty($this->input->post('buku'))) {
+                $this->session->set_flashdata("missing","Wajib pilih salah satu Buku!");
 			    redirect('petugas/Kembali/?id_pinjam='.$id);
             } else {
                 //*layout 
@@ -161,14 +167,11 @@ class Kembali extends CI_Controller {
                     $jumlahdenda=0;
                 }
                 $jumlahdenda;
-                // buat data berupa array untuk dimasukan ke dalam database
-                $kem = array('id_kembali'=>'',
-                    'id_pinjam' => $id,
-                            'tgl_dikembalikan'=>$this->input->post('tgl_kembali'),
-                            'terlambat'=>$SLS,
-                            'id_denda'=>$id_denda,
-                            'denda'=> $jumlahdenda );
-                $insert=$this->Buku_model->insertData('tb_kembali',$kem);
+
+                // mengambil nilai dari inputan Buku
+                $list_buku = $this->input->post('buku');
+
+                // Yang perlu di edit
                 $this->db->where('id_pinjam',$id);
                 $query=$this->db->get('tb_detail_pinjam')->result();
                 foreach ($query as $key => $row)
@@ -176,19 +179,68 @@ class Kembali extends CI_Controller {
                     $id_detail_pinjam=$row->id_detail_pinjam;
                     $id_buku=$row->id_buku;
                     $no_buku=$row->no_buku;
-                    //update status pada detail buku
-                    $this->db->set('status',1);
-                    $this->db->where('id_buku',$id_buku);
-                    $this->db->where('no_buku',$no_buku);
-                    $this->db->update('tb_detail_buku');
-                    //update flag detail pinjam
-                    $this->db->set('flag',1);
-                    $this->db->where('id_detail_pinjam',$id_detail_pinjam);
-                    $this->db->update('tb_detail_pinjam');
+                    if(in_array($id_buku, $list_buku)) {
+                        //update status pada detail buku
+                        $this->db->set('status',1);
+                        $this->db->where('id_buku',$id_buku);
+                        $this->db->where('no_buku',$no_buku);
+                        $this->db->update('tb_detail_buku');
+                        //update flag detail pinjam
+                        $this->db->set('flag',1);
+                        $this->db->where('id_detail_pinjam',$id_detail_pinjam);
+                        $this->db->update('tb_detail_pinjam');
+                    }
                 }
-                $this->db->set('status',1);
-                $this->db->where('id_pinjam',$id);
-                $this->db->update('tb_pinjam');
+
+                // cek sisa Buku yang dipinjam
+                $this->db->where('id_pinjam', $id);
+                $this->db->where('flag', 0);
+                $this->db->from('tb_detail_pinjam');
+                $sisa_buku = $this->db->count_all_results();
+
+                if ($sisa_buku == 0) {
+                    $this->db->set('status',1);
+                    $this->db->where('id_pinjam',$id);
+                    $this->db->update('tb_pinjam');
+                }
+
+                // cek apakah sudah pernah tersimpan di tb_kembali
+                $this->db->where('id_pinjam', $id);
+                $this->db->from('tb_kembali');
+                $cek_kembali = $this->db->count_all_results();
+
+                if ($cek_kembali == 0) {
+                    // buat data berupa array untuk dimasukan ke dalam database
+                    // $t= $tgl_kembali;
+                    // $s=substr($t,0,2);
+                    // $s1=substr($t,3,2);
+                    // $s2=substr($t,6,6);
+                    // $s3=$s2."/".$s.'/'.$s1;
+                    $kem = array(
+                                'id_pinjam'         => $id,
+                                'tgl_dikembalikan'  => date('Y-m-d', $tgl_kembali),
+                                'terlambat'         => $SLS,
+                                'id_denda'          => $id_denda,
+                                'denda'             => $jumlahdenda );
+                    $insert=$this->Buku_model->insertData('tb_kembali',$kem);
+                } else {
+                    $isi_status = 0;
+                    if ($sisa_buku == 0) {
+                        $isi_status = 1;
+                    }
+
+                    $data_update = [
+                        'tgl_dikembalikan'  => date('Y-m-d', $tgl_kembali),
+                        'terlambat'         => $SLS,
+                        'id_denda'          => $id_denda,
+                        'denda'             => $jumlahdenda,
+                        'status'            => $isi_status
+                    ];
+                    $this->db->where('id_pinjam', $id);
+                    $this->db->update('tb_kembali', $data_update);
+                }
+
+                // Sementara Sampai sini 
               
                 $data['data_detail_buku'] = $this->Buku_model->getAllData("tb_detail_buku");
                 $data['data_buku'] = $this->Buku_model->getAllData("tb_buku");
@@ -196,6 +248,7 @@ class Kembali extends CI_Controller {
                 $data['data_pinjam']=$this->Buku_model->get_detail1("tb_pinjam","id_pinjam",$id);
                 $data['kembali']=$this->Buku_model->get_detail1("tb_kembali","id_pinjam",$id); 
                 $data['data_detail_pinjam'] = $this->Buku_model->getAllData("tb_detail_pinjam");
+                $data['list_buku'] = $list_buku;
                 $tmp['content']=$this->load->view('petugas/kembali/Buku_kembali',$data, TRUE);
                 $this->load->view('petugas/layout',$tmp);
                  //redirect('petugas/Kembali','refresh');

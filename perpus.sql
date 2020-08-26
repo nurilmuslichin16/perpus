@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 23, 2020 at 03:13 PM
+-- Generation Time: Aug 27, 2020 at 01:22 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.2.31
 
@@ -160,7 +160,7 @@ INSERT INTO `tb_detail_buku` (`id_detail_buku`, `id_buku`, `no_buku`, `status`) 
 (3, 11111, 3, '1'),
 (9, 22222, 1, '1'),
 (10, 22222, 2, '1'),
-(11, 22222, 3, '0'),
+(11, 22222, 3, '1'),
 (12, 22222, 4, '1'),
 (13, 22222, 5, '1'),
 (14, 22222, 6, '1'),
@@ -198,8 +198,12 @@ CREATE TABLE `tb_detail_pinjam` (
 --
 
 INSERT INTO `tb_detail_pinjam` (`id_detail_pinjam`, `id_pinjam`, `id_buku`, `no_buku`, `flag`) VALUES
-(2, 2, 22222, 1, 1),
-(3, 3, 22222, 3, 0);
+(21, 10, 11111, 1, 1),
+(22, 10, 22222, 2, 1),
+(23, 10, 33333, 3, 1),
+(24, 11, 33333, 3, 1),
+(25, 11, 44444, 1, 1),
+(26, 11, 11111, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -332,16 +336,17 @@ CREATE TABLE `tb_kembali` (
   `tgl_dikembalikan` date NOT NULL,
   `terlambat` int(2) NOT NULL,
   `id_denda` int(6) NOT NULL,
-  `denda` int(11) NOT NULL
+  `denda` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tb_kembali`
 --
 
-INSERT INTO `tb_kembali` (`id_kembali`, `id_pinjam`, `tgl_dikembalikan`, `terlambat`, `id_denda`, `denda`) VALUES
-(1, 1, '2020-08-18', 3, 6, 3000),
-(2, 2, '2020-08-13', 0, 6, 0);
+INSERT INTO `tb_kembali` (`id_kembali`, `id_pinjam`, `tgl_dikembalikan`, `terlambat`, `id_denda`, `denda`, `status`) VALUES
+(10, 10, '2020-09-04', 4, 6, 4000, 1),
+(11, 11, '2020-08-31', 2, 6, 2000, 1);
 
 -- --------------------------------------------------------
 
@@ -492,9 +497,8 @@ CREATE TABLE `tb_pinjam` (
 --
 
 INSERT INTO `tb_pinjam` (`id_pinjam`, `tgl_pinjam`, `id_anggota`, `tgl_kembali`, `total_buku`, `status`) VALUES
-(1, '2020-08-12', '17318', '2020-08-15', 1, 1),
-(2, '2020-08-12', '17284', '2020-08-13', 1, 1),
-(3, '2020-08-12', '17740', '2020-08-13', 1, 0);
+(10, '2020-08-27', '17284', '2020-08-31', 3, 1),
+(11, '2020-08-27', '17716', '2020-08-29', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -717,7 +721,7 @@ ALTER TABLE `tb_detail_buku`
 -- AUTO_INCREMENT for table `tb_detail_pinjam`
 --
 ALTER TABLE `tb_detail_pinjam`
-  MODIFY `id_detail_pinjam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_detail_pinjam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `tb_ebook`
@@ -741,7 +745,7 @@ ALTER TABLE `tb_kelas`
 -- AUTO_INCREMENT for table `tb_kembali`
 --
 ALTER TABLE `tb_kembali`
-  MODIFY `id_kembali` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_kembali` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_mapel`
@@ -765,7 +769,7 @@ ALTER TABLE `tb_pengarang`
 -- AUTO_INCREMENT for table `tb_pinjam`
 --
 ALTER TABLE `tb_pinjam`
-  MODIFY `id_pinjam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pinjam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_provinsi`

@@ -20,6 +20,15 @@
 
    	}?>
     <!--show error message here -->
+
+    <?php if($this->session->flashdata('missing')) { ?>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-times"></i> Gagal!</h4>
+          <?= $this->session->flashdata('missing'); ?>
+        </div>
+      <?php } ?>
+
   <div class="form-group"></div>
 	<form class="form-horizontal" method="post"  action="<?php echo base_url(); ?>petugas/Kembali/Kembalikan/<?php echo $data_pinjam['id_pinjam'];?>" role="form">
               <div class="box-body">
@@ -55,9 +64,37 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Tanggal di Kembalikan</label>
                   <div class="col-sm-4">
-                    <input type="date" required="required" class="form-control" name="tgl_kembali">
+                    <!--input type="date" required="required" class="form-control" name="tgl_kembali"-->
+                    <input data-provide="datepicker" class="bootstrap-datepicker" name="tgl_kembali" required>
                   </div>
                 </div>
+                <?php foreach($data_buku as $key => $buku) :?>
+                <?php if($key == 0) { ?>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Buku Yang Dipinjam</label>
+                  <div class="col-sm-4">
+                    <div class="form-check">
+                      <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="<?= $buku['id_buku']; ?>" name="buku[]" checked>&nbsp;
+                      <label class="form-check-label" for="gridCheck">
+                        <?= $buku['judul']; ?>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <?php } else { ?>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"></label>
+                  <div class="col-sm-4">
+                    <div class="form-check">
+                      <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="<?= $buku['id_buku']; ?>" name="buku[]" >&nbsp;
+                      <label class="form-check-label" for="gridCheck">
+                      <?= $buku['judul']; ?>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <?php } ?>
+                <?php endforeach; ?>
               </div>
               <div class="col-sm-4">
               </div>
@@ -72,13 +109,13 @@
               <!-- /.box-footer -->
             </form>
   </div>
-  <div class="box-footer">
+    <div class="box-footer">
     <td>
-     <div align ="Right"> <a  href="<?php echo base_url(); ?>petugas/Pinjam"  class="btn btn-danger" role="button" data-toggle="tooltip" title="Kembali"></i>Back</a></div>
+    <div align ="Right"> <a  href="<?php echo base_url(); ?>petugas/Pinjam"  class="btn btn-danger" role="button" data-toggle="tooltip" title="Kembali"></i>Back</a></div>
   </td>
   </div>
   <div class="box-footer">
-    Menambah Data Anggota Perpustakaan, isi form diatas untuk menambahkan data Anggota. 
+    Menambah Data Aanggota Perpustakaan, isi form diatas untuk menambahkan data Anggota. 
   </div><!-- box-footer -->
 </div><!-- /.box -->
 

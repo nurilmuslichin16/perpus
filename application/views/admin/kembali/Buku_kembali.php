@@ -62,6 +62,7 @@
         <tbody>
          <?php
   $no = 1;
+  $jumlah_buku = 0;
     foreach($data_detail_pinjam->result_array() as $op)
     {
       if ($op['id_pinjam']==$data_pinjam['id_pinjam']) 
@@ -73,12 +74,15 @@
          if($op2['id_buku']==$buku && $op['id_pinjam']==$data_pinjam['id_pinjam'])
           { 
                   ?>
+                  <?php if(in_array($op2['id_buku'], $list_buku)) { ?>
                   <tr>
                       <td><?php echo $no++ ;?></td>
                       <td><?php echo $op['id_buku'];?></td>
                       <td><?php echo $op2['judul'];?></td>
                       <td align="center"><?php echo $op['no_buku'];?></td>
                   </tr>
+                  <?php $jumlah_buku++ ?>
+                  <?php } ?>
 <?php           }
         }
       }
@@ -86,7 +90,7 @@
     ?>
     <tr>
       <td colspan="3" align="right"><b> Jumlah Buku </b></td>
-      <td align="right"><?php echo $data_pinjam['total_buku'];?> </td>
+      <td align="right"><?php echo $jumlah_buku ?></td>
     </tr>
     <tr>
       <td colspan="3" align="right"><b> Terlambat</b></td>

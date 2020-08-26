@@ -1,30 +1,6 @@
 <!--css khusus halaman ini -->
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/dataTables.bootstrap.css">
 <!--modal dialog untuk hapus -->
-  <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Konfirmasi Hapus</h4>
-                </div>
-            
-                <div class="modal-body">
-                    <p>Anda akan menghapus Data Buku beserta detail stok buku ini</p>
-                    <p><strong>Peringatan</strong>  Setelah data dihapus, data tidak dapat dikembalikan!</p>
-                    <br />
-                    <p>Ingin melanjutkan menghapus?</p>
-                    <p class="debug-url"></p>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger btn-ok">Hapus</a>
-                </div>
-            </div>
-        </div>
-    </div>
 <!--content -->
 <div class="box box-solid box-primary">
   <div class="box-header with-border">
@@ -86,36 +62,35 @@
         <tbody>
          <?php
   $no = 1;
+  $jumlah_buku = 0;
     foreach($data_detail_pinjam->result_array() as $op)
     {
       if ($op['id_pinjam']==$data_pinjam['id_pinjam']) 
       {
         $buku=$op['id_buku'];
+        $no_buku=$op['no_buku'];
         foreach ($data_buku->result_array() as $op2) 
         {
-         if($op2['id_buku']==$buku)
-          {
-            foreach ($data_detail_buku->result_array() as $key) 
-            {
-              if ($key['no_buku']==$op['no_buku']) 
-                {
+         if($op2['id_buku']==$buku && $op['id_pinjam']==$data_pinjam['id_pinjam'])
+          { 
                   ?>
+                  <?php if(in_array($op2['id_buku'], $list_buku)) { ?>
                   <tr>
                       <td><?php echo $no++ ;?></td>
-                      <td><?php echo $op2['id_buku'];?></td>
+                      <td><?php echo $op['id_buku'];?></td>
                       <td><?php echo $op2['judul'];?></td>
-                      <td align="center"><?php echo $key['no_buku'];?></td>
+                      <td align="center"><?php echo $op['no_buku'];?></td>
                   </tr>
+                  <?php $jumlah_buku++ ?>
+                  <?php } ?>
 <?php           }
-            }
-          }
         }
       }
     }
     ?>
     <tr>
       <td colspan="3" align="right"><b> Jumlah Buku </b></td>
-      <td align="right"><?php echo $data_pinjam['total_buku'];?> </td>
+      <td align="right"><?php echo $jumlah_buku ?></td>
     </tr>
     <tr>
       <td colspan="3" align="right"><b> Terlambat</b></td>
@@ -139,9 +114,9 @@
          </tbody>
     </table>
   </div>
-  <div class="box-footer">
+    <div class="box-footer">
     <td>
-     <div align ="left"> <a  href="<?php echo base_url(); ?>petugas/Pinjam"  class="btn btn-danger" role="button" data-toggle="tooltip" title="Kembali"></i>Back</a></div>
+    <div align ="left"> <a  href="<?php echo base_url(); ?>petugas/Pinjam"  class="btn btn-danger" role="button" data-toggle="tooltip" title="Kembali"></i>Back</a></div>
   </td>
   </div>
   <div class="box-footer">

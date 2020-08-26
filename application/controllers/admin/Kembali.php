@@ -169,7 +169,11 @@ class Kembali extends CI_Controller {
         //     $sisa_buku = $this->db->count_all_results();
         //     echo $sisa_buku;
         // }
-
+        // echo $this->input->post('tgl_pinjam');
+        // echo "<br/>";
+        // echo $this->input->post('tgl_kembali');
+        // echo "<br/>";
+        // echo date('Y-m-d', strtotime($this->input->post('tgl_kembali')));
         // die();
         
         $data['log']=$this->db->get_where('tb_petugas',array('id_petugas' => $this->session->userdata('username')))->result();
@@ -269,17 +273,17 @@ class Kembali extends CI_Controller {
 
                 if ($cek_kembali == 0) {
                     // buat data berupa array untuk dimasukan ke dalam database
-                    $t= $this->input->post('tgl_kembali');  
-                    $s=substr($t,0,2);
-                    $s1=substr($t,3,2);
-                    $s2=substr($t,6,6);
-                    $s3=$s2."/".$s.'/'.$s1;
-                    $kem = array('id_kembali'=>'',
-                        'id_pinjam' => $id,
-                                'tgl_dikembalikan'=>$s3,
-                                'terlambat'=>$SLS,
-                                'id_denda'=>$id_denda,
-                                'denda'=> $jumlahdenda );
+                    // $t= $tgl_kembali;
+                    // $s=substr($t,0,2);
+                    // $s1=substr($t,3,2);
+                    // $s2=substr($t,6,6);
+                    // $s3=$s2."/".$s.'/'.$s1;
+                    $kem = array(
+                                'id_pinjam'         => $id,
+                                'tgl_dikembalikan'  => date('Y-m-d', $tgl_kembali),
+                                'terlambat'         => $SLS,
+                                'id_denda'          => $id_denda,
+                                'denda'             => $jumlahdenda );
                     $insert=$this->Buku_model->insertData('tb_kembali',$kem);
                 } else {
                     $isi_status = 0;
@@ -288,9 +292,11 @@ class Kembali extends CI_Controller {
                     }
 
                     $data_update = [
-                        'id_denda'  => $id_denda,
-                        'denda'     => $jumlahdenda,
-                        'status'    => $isi_status
+                        'tgl_dikembalikan'  => date('Y-m-d', $tgl_kembali),
+                        'terlambat'         => $SLS,
+                        'id_denda'          => $id_denda,
+                        'denda'             => $jumlahdenda,
+                        'status'            => $isi_status
                     ];
                     $this->db->where('id_pinjam', $id);
                     $this->db->update('tb_kembali', $data_update);
@@ -304,6 +310,7 @@ class Kembali extends CI_Controller {
                 $data['data_pinjam']=$this->Buku_model->get_detail1("tb_pinjam","id_pinjam",$id);
                 $data['kembali']=$this->Buku_model->get_detail1("tb_kembali","id_pinjam",$id); 
                 $data['data_detail_pinjam'] = $this->Buku_model->getAllData("tb_detail_pinjam");
+                $data['list_buku'] = $list_buku;
                 $tmp['content']=$this->load->view('admin/kembali/Buku_kembali',$data, TRUE);
                 $this->load->view('admin/layout',$tmp);
                  //redirect('admin/Kembali','refresh');
